@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Darby-Cobbs Dispatch</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: 600px email column; each department a soft colour band, pale header bar over a paler body */
+:root{
+  color-scheme:light;
+  --ground:#EDEEF3; --paper:#FFFFFF; --ink:#1A1F2E; --ink-2:#5E6577; --rule:#E4E6ED;
+  --ikb:#002FA7;
+  --b1:#CDD9F3; --x1:#1F3A86; --t1:#EFF3FC;  /* grants, blue */
+  --b2:#CBDED5; --x2:#1D5346; --t2:#F0F7F4;  /* research, sage */
+  --b3:#EDE1C7; --x3:#6B5114; --t3:#FAF6EC;  /* news, sand */
+  --b4:#F2D6CF; --x4:#8A3C31; --t4:#FCF3F1;  /* events, clay */
+  --b5:#DCD6EF; --x5:#473A8B; --t5:#F5F2FB;  /* collaboration, lilac */
+  --sans:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  --disp:var(--sans); --mono:var(--sans);
+}
+*{box-sizing:border-box}
+body{background:var(--ground);color:var(--ink);font-family:var(--sans);line-height:1.55;
+  padding-block:26px;padding-left:16px;padding-right:16px;-webkit-font-smoothing:antialiased}
+.wrap{max-width:600px;margin:0 auto}
+.banner{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--ink-2);text-align:center;margin:0 0 12px}
+.paper{background:var(--paper);border:1px solid var(--rule);overflow:hidden}
+
+/* masthead */
+.mast{background:#E9EEFA;color:var(--ikb);padding:32px 30px 26px;border-bottom:1px solid #D4DEF4}
+.mast .kicker{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;
+  margin:0 0 12px;opacity:.75}
+.mast h1{font-family:var(--disp);font-weight:600;font-size:clamp(32px,8.5vw,46px);line-height:1.02;
+  margin:0;letter-spacing:-.03em;text-wrap:balance}
+.mast .tag{margin:14px 0 0;font-size:14px;color:#3C4660;max-width:40ch}
+.issuebar{background:#F4F5F9;color:var(--ink-2);padding:9px 30px;display:flex;flex-wrap:wrap;
+  gap:4px 18px;font-family:var(--mono);font-size:10.5px;letter-spacing:.04em;border-bottom:1px solid var(--rule)}
+
+/* department bands */
+.sec{background:var(--tint)}
+.sec.s1{--bar:var(--b1);--hue:var(--x1);--tint:var(--t1)}
+.sec.s2{--bar:var(--b2);--hue:var(--x2);--tint:var(--t2)}
+.sec.s3{--bar:var(--b3);--hue:var(--x3);--tint:var(--t3)}
+.sec.s4{--bar:var(--b4);--hue:var(--x4);--tint:var(--t4)}
+.sec.s5{--bar:var(--b5);--hue:var(--x5);--tint:var(--t5)}
+.bar{background:var(--bar);color:var(--hue);padding:11px 30px;display:flex;align-items:baseline;gap:11px}
+.bar .n{font-family:var(--mono);font-size:11px;font-weight:500;opacity:.7}
+.bar h2{font-family:var(--disp);font-weight:600;font-size:20px;line-height:1.2;margin:0;letter-spacing:-.015em}
+.body{padding:20px 30px 26px}
+.dek{font-size:13px;color:var(--ink-2);margin:0 0 16px}
+
+/* grant rows */
+.item{padding:14px 0;border-top:1px solid var(--rule)}
+.item:first-of-type{border-top:0;padding-top:0}
+.funder{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--hue);font-weight:500;margin:0 0 3px}
+.item h3{font-size:16px;font-weight:600;margin:0 0 5px;line-height:1.3;text-wrap:balance}
+.item p{font-size:13.5px;color:var(--ink-2);margin:0}
+.meta{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
+.chip{font-family:var(--mono);font-size:10.5px;padding:3px 8px;background:var(--paper);
+  border:1px solid var(--rule);color:var(--ink-2);border-radius:2px;white-space:nowrap}
+.chip.due{background:var(--bar);border-color:transparent;color:var(--hue);font-weight:500}
+
+/* research spotlight */
+.spot{background:var(--paper);padding:20px 22px;border-left:4px solid var(--bar)}
+.spot .who{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--hue);font-weight:500;margin:0 0 7px}
+.spot h3{font-family:var(--disp);font-weight:600;font-size:19px;line-height:1.25;margin:0 0 9px;letter-spacing:-.015em;text-wrap:balance}
+.spot p{font-size:13.5px;margin:0;color:var(--ink)}
+.pull{font-family:var(--mono);font-size:12px;line-height:1.5;color:var(--hue);
+  margin-top:13px;padding-top:12px;border-top:1px solid var(--rule)}
+
+/* news briefs */
+.brief{display:grid;grid-template-columns:58px 1fr;gap:14px;padding:12px 0;border-top:1px solid var(--rule)}
+.brief:first-of-type{border-top:0;padding-top:0}
+.brief time{font-family:var(--mono);font-size:11px;color:var(--hue);font-weight:500;padding-top:2px;min-width:0}
+.brief div{min-width:0}
+.brief h3{font-size:15px;font-weight:600;margin:0 0 3px;line-height:1.3}
+.brief p{font-size:13px;color:var(--ink-2);margin:0}
+
+/* events */
+.ev{display:flex;gap:14px;padding:13px 0;border-top:1px solid var(--rule);align-items:flex-start}
+.ev:first-of-type{border-top:0;padding-top:0}
+.cal{flex:0 0 54px;text-align:center;background:var(--bar);color:var(--hue);padding:7px 0;border-radius:2px}
+.cal .mo{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;display:block;opacity:.8}
+.cal .dy{font-family:var(--disp);font-weight:600;font-size:19px;line-height:1.18;display:block;letter-spacing:-.02em}
+.ev .txt{min-width:0}
+.ev h3{font-size:15px;font-weight:600;margin:0 0 3px;line-height:1.3}
+.ev p{font-size:13px;color:var(--ink-2);margin:0}
+
+/* collaboration board */
+.board{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.post{background:var(--paper);border:1px solid var(--rule);border-top:3px solid var(--bar);
+  padding:13px 14px;border-radius:2px;min-width:0}
+.post .kind{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;
+  margin:0 0 6px;font-weight:500;color:var(--hue)}
+.post h3{font-size:14px;font-weight:600;margin:0 0 4px;line-height:1.3}
+.post p{font-size:12.5px;color:var(--ink-2);margin:0}
+
+/* placeholder */
+.ph{border:1px dashed var(--bar);background:var(--paper);padding:12px 14px;border-radius:2px;
+  color:var(--ink-2);font-family:var(--mono);font-size:11.5px;line-height:1.5;margin-top:14px}
+
+/* footer */
+.foot{background:#F4F5F9;color:var(--ink-2);padding:26px 30px 28px;font-size:12.5px;border-top:1px solid var(--rule)}
+.foot h3{font-family:var(--disp);font-weight:600;font-size:17px;margin:0 0 8px;color:var(--ikb);letter-spacing:-.015em}
+.foot p{margin:0 0 9px}
+.foot .fine{font-family:var(--mono);font-size:10.5px;margin-top:16px;padding-top:13px;
+  border-top:1px solid var(--rule);color:#858BA0}
+a{color:var(--ikb)}
+
+@media (max-width:460px){
+  .mast,.issuebar,.bar,.body,.foot{padding-left:18px;padding-right:18px}
+  .board{grid-template-columns:1fr}
+  .brief{grid-template-columns:50px 1fr;gap:11px}
+}
+</style>
+<style>html,body{margin:0}img{max-width:100%}</style>
+</head>
+<body>
+
+<div class="wrap">
+  <p class="banner">Draft layout for review · not yet sent</p>
+
+  <div class="paper">
+
+    <header class="mast">
+      <p class="kicker">Darby-Cobbs Monitoring &amp; Data Co-Lab</p>
+      <h1>Darby-Cobbs Dispatch</h1>
+      <p class="tag">Grants, research and collaboration across the watershed, for the partners doing the work.</p>
+    </header>
+    <div class="issuebar">
+      <span>Issue 01</span><span>[Month] 2026</span><span>[N] partners</span><span>Next issue [date]</span>
+    </div>
+
+    <section class="sec s1">
+      <div class="bar"><span class="n">01</span><h2>Open grants, next six weeks</h2></div>
+      <div class="body">
+        <p class="dek">Everything with a deadline between today and [date]. Something missing? Reply and it runs next issue.</p>
+
+        <div class="item">
+          <p class="funder">Pennsylvania Water Environment Association</p>
+          <h3>PFAS research and monitoring</h3>
+          <p>[One line on scope, eligibility and award range.]</p>
+          <div class="meta"><span class="chip due">Due Oct 30</span><span class="chip">[Award range]</span><span class="chip">[Link]</span></div>
+        </div>
+
+        <div class="item">
+          <p class="funder">National Fish and Wildlife Foundation</p>
+          <h3>Delaware Watershed Conservation Fund 2027</h3>
+          <p>Fall proposal labs are open now, thirty minutes one-on-one with NFWF and US Fish and Wildlife before the RFP drops.</p>
+          <div class="meta"><span class="chip due">Labs open now</span><span class="chip">RFP expected [date]</span><span class="chip">[Link]</span></div>
+        </div>
+
+        <div class="item">
+          <p class="funder">William Penn Foundation</p>
+          <h3>[Program name]</h3>
+          <p>[One line on scope and who is eligible.]</p>
+          <div class="meta"><span class="chip">[Deadline]</span><span class="chip">[Award range]</span><span class="chip">[Link]</span></div>
+        </div>
+
+        <p class="ph">+ Add an opportunity. Funder, what it funds, deadline, link. Four lines maximum.</p>
+      </div>
+    </section>
+
+    <section class="sec s2">
+      <div class="bar"><span class="n">02</span><h2>Research spotlight</h2></div>
+      <div class="body">
+        <p class="dek">One piece of Cobbs Creek research per issue, in the researcher's own words.</p>
+
+        <div class="spot">
+          <p class="who">Vicki Jagdeo · Sustainable Water Resource Engineering Lab, Drexel</p>
+          <h3>What the literature actually says about Cobbs Creek</h3>
+          <p>[Two or three sentences. What they looked at, what they found, and what they want from this group.]</p>
+          <p class="pull">Working finding: the most recent Cobbs Creek plan on record with the Philadelphia Water Department is still the 2009 edition.</p>
+        </div>
+
+        <p class="ph">Next issue: [researcher], [institution], [topic]. Want the slot? Reply. It does not need to be finished work.</p>
+      </div>
+    </section>
+
+    <section class="sec s3">
+      <div class="bar"><span class="n">03</span><h2>Watershed news</h2></div>
+      <div class="body">
+        <p class="dek">Short items. Full detail lives behind the links.</p>
+
+        <div class="brief">
+          <time>Sep 28</time>
+          <div>
+            <h3>Community Greening Plan consultant RFP is open</h3>
+            <p>Proposals due Friday October 30 as a single PDF. Community-led project with the Water Center as fiscal agent and Clean Air Council supporting.</p>
+          </div>
+        </div>
+
+        <div class="brief">
+          <time>Sep 29</time>
+          <div>
+            <h3>Community Greening Liaison applications open</h3>
+            <p>Residents of Overbrook Park, Carroll Park, Haddington, Cobbs Creek, Kingsessing, Paschall and Elmwood Park. Applications close November 1.</p>
+          </div>
+        </div>
+
+        <div class="brief">
+          <time>[Date]</time>
+          <div>
+            <h3>[Headline]</h3>
+            <p>[One or two sentences. Who, what, and what it means for people working in the watershed.]</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec s4">
+      <div class="bar"><span class="n">04</span><h2>Events and seminars</h2></div>
+      <div class="body">
+        <p class="dek">The Co-Lab now opens with a watershed research seminar, then moves to grants and collaboration.</p>
+
+        <div class="ev">
+          <div class="cal"><span class="mo">Nov</span><span class="dy">[00]</span></div>
+          <div class="txt">
+            <h3>Data Co-Lab: [seminar topic]</h3>
+            <p>Seminar by [presenter, institution], then grant updates and collaboration opportunities. Agenda circulates the week before.</p>
+          </div>
+        </div>
+
+        <div class="ev">
+          <div class="cal"><span class="mo">Mar</span><span class="dy">[00]</span></div>
+          <div class="txt">
+            <h3>Cobbs Creek Watershed Research Symposium</h3>
+            <p>Full-day convening, in planning for mid-March. Reply if you have work you would want to present.</p>
+          </div>
+        </div>
+
+        <p class="ph">+ Add an event. Partners can submit their own.</p>
+      </div>
+    </section>
+
+    <section class="sec s5">
+      <div class="bar"><span class="n">05</span><h2>Collaboration board</h2></div>
+      <div class="body">
+        <p class="dek">Post what you need, or what you have. Two lines each.</p>
+
+        <div class="board">
+          <div class="post">
+            <p class="kind">Looking for</p>
+            <h3>[What you need]</h3>
+            <p>[Who you are and what would help. Data, a site, a co-applicant, a pair of hands.]</p>
+          </div>
+          <div class="post">
+            <p class="kind">Offering</p>
+            <h3>[What you have]</h3>
+            <p>[Equipment, capacity, a dataset, a meeting slot, an existing relationship.]</p>
+          </div>
+          <div class="post">
+            <p class="kind">Looking for</p>
+            <h3>[What you need]</h3>
+            <p>[Two lines.]</p>
+          </div>
+          <div class="post">
+            <p class="kind">Offering</p>
+            <h3>[What you have]</h3>
+            <p>[Two lines.]</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="foot">
+      <h3>Get something in the next issue</h3>
+      <p>Grant deadlines, research you want seen, events, or a post for the collaboration board. Send it to [address] by [day] and it runs in the [date] issue.</p>
+      <p>Research spotlight slots are open for [months].</p>
+      <p class="fine">
+        Darby-Cobbs Monitoring &amp; Data Co-Lab · convened by the Water Center at the University of Pennsylvania<br>
+        [Unsubscribe] · [Update preferences] · [View in browser]
+      </p>
+    </footer>
+
+  </div>
+</div>
+</body>
+</html>
